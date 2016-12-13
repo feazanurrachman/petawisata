@@ -30,6 +30,7 @@
       <button onclick="getNearbyLocation()">get nearby</button>
       <button onclick="getUserLocation()">get user location</button>
     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
       var map;
       var markerArray = [];
@@ -199,8 +200,10 @@
       function navigatorFail(err) {
         console.log(err);
         console.log('nav error, use IP for location')
+        $.getJSON("//www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
+          console.log(JSON.stringify(data, null, 2));
+        });
       }
-      
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
   </body>
