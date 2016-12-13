@@ -27,6 +27,7 @@
         <option value="Mall">Mall</option>
         <option value="Hotel">Hotel</option>
       </select>
+      <button onclick="getNearbyLocation()">get nearby</button>
     </div>
     <script>
       var map;
@@ -140,7 +141,26 @@
           }
         }
       }
+      function getNearbyLocation() {
+        console.log('clicked');
+        var markerTarget = selectedMarker;
+        var targetLat = markerTarget.getPosition().lat();
+        var targetLng = markerTarget.getPosition().lng();
+        var targetLoc = new google.maps.LatLng(targetLat, targetLng);
+        console.log(targetLoc);
+        for (i = 0; i < mapMarkerArray.length; i++) {
+            markerCheck = mapMarkerArray[i];
+            var checkLat = markerCheck.getPosition().lat();
+            var checkLng = markerCheck.getPosition().lng();
+            var checkLoc = new google.maps.LatLng(checkLat,checkLng);
+            var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
+            if(distance > 500) {
+              markerCheck.setVisible(false);
+            }
+          }
+        }
+      
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
   </body>
 </html>
