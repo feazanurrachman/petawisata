@@ -62,7 +62,7 @@
               aMarker.push(name);
               // 2 = type
               var type = markers[i].getAttribute('type');
-              aMarker.push(name);
+              aMarker.push(type);
               // 3 = lat, 4 = lng
               aMarker.push(markers[i].getAttribute('lat'));
               aMarker.push(markers[i].getAttribute('lng'));
@@ -104,9 +104,9 @@
 
       function addMarker(marker) {
         var title = marker[1];
-        var address = marker[2];
-        var type = marker[3];
-        var pos = new google.maps.LatLng(marker[4], marker[5]);
+        // var address = marker[2];
+        var type = marker[2];
+        var pos = new google.maps.LatLng(marker[3], marker[4]);
         thisMarker = new google.maps.Marker({
           title: title,
           position: pos,
