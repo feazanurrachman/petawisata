@@ -23,8 +23,9 @@
     <div id="menu" style="z-index: 2; width: 200px; height: 200px;">
       <select id="type" onchange="filterMarkers(this.value);">
         <option value="">Please select category</option>
-        <option value="restaurant">restaurant</option>
-        <option value="hotel">hotel</option>
+        <option value="Museum">Museum</option>
+        <option value="Mall">Mall</option>
+        <option value="Hotel">Hotel</option>
       </select>
     </div>
     <script>
@@ -82,7 +83,6 @@
             // loop through array, create marker, put marker into another array for filter
 
             for(var i = 0; i < markerArray.length;i++) {
-              alert(i);
               addMarker(markerArray[i]);
             }
           });
