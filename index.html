@@ -38,7 +38,26 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+    <div class="container-map">
     <div id="map" style="z-index: 1;"></div>
+    <div class="modal-place">
+      <div class="modal-place__header">
+        <h2 class="modal-place__header-h2">Find a tourism place</h2>
+      </div>
+      <table class="modal-place__content">
+        <tr>
+          <td class="modal-place__marker">?</td>
+          <td class="modal-place__category">Museum</td>
+          <td>
+          <div class="material-switch pull-right">
+            <input id="museum" name="museum" type="checkbox">
+            <label for="museum" class="label-success"></label>
+          </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    </div>
     <div id="menu" style="z-index: 2;">
       <select id="type" onchange="filterMarkers(this.value);">
         <option value="">Please select category</option>
