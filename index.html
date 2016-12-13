@@ -23,8 +23,9 @@
     <div id="menu" style="z-index: 2; width: 200px; height: 200px;">
       <select id="type" onchange="filterMarkers(this.value);">
         <option value="">Please select category</option>
-        <option value="restaurant">restaurant</option>
-        <option value="hotel">hotel</option>
+        <option value="Museum">Museum</option>
+        <option value="Mall">Mall</option>
+        <option value="Hotel">Hotel</option>
       </select>
     </div>
     <script>
@@ -48,7 +49,7 @@
        var infoWindow = new google.maps.InfoWindow;
 
           // Change this depending on the name of your PHP or XML file
-          downloadUrl('marker.xml', function(data) {
+          downloadUrl('markers.xml', function(data) {
             var xml = data.responseXML;
             var markers = xml.documentElement.getElementsByTagName('marker');
             // put xml response into array
@@ -59,15 +60,24 @@
               // 1 = nama
               var name = markers[i].getAttribute('name');
               aMarker.push(name);
-              // 2 = address
-              var address = markers[i].getAttribute('address');
-              aMarker.push(name);
-              // 3 = tipe morker (hotel, resto, etc)
+              // 2 = type
               var type = markers[i].getAttribute('type');
-              aMarker.push(type);
-              // 4 = lat, 5 = lng
+              aMarker.push(name);
+              // 3 = lat, 4 = lng
               aMarker.push(markers[i].getAttribute('lat'));
               aMarker.push(markers[i].getAttribute('lng'));
+              // 5 = photo url
+              aMarker.push(markers[i].getAttribute('photo'));
+              // 6 = jam buka
+              aMarker.push(markers[i].getAttribute('open'));
+              // 7 = price
+              aMarker.push(markers[i].getAttribute('price'));
+              // 8 = camera (1 allowed, 0 not allowed)
+              aMarker.push(markers[i].getAttribute('camera'));
+              // 9 = rating
+              aMarker.push(markers[i].getAttribute('rating'));
+              // 10 = visitor
+              aMarker.push(markers[i].getAttribute('visitor'));
               markerArray.push(aMarker);
             }
             // loop through array, create marker, put marker into another array for filter
