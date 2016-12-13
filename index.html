@@ -35,6 +35,7 @@
       var markerArray = [];
       var mapMarkerArray = [];
       var selectedMarker;
+      var userLocationMarker;
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -6.21462, lng: 106.84513},
@@ -183,11 +184,21 @@
 
       function navigatorSuccess(pos) {
         var crd = pos.coords;
+        var title = 'User Location';
+        var type = 'Special'
+        var pos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
         console.log(crd);
+        userLocationMarker = new google.maps.Marker({
+          title: title,
+          position: pos,
+          category: type,
+          map: map
+        });
       }
 
       function navigatorFail(err) {
         console.log(err);
+        console.log('nav error, use IP for location')
       }
       
     </script>
