@@ -143,6 +143,7 @@
       }
       function getNearbyLocation() {
         console.log('clicked');
+        // target adalah marker yang sedang dipilih
         var markerTarget = selectedMarker;
         var targetLat = markerTarget.getPosition().lat();
         var targetLng = markerTarget.getPosition().lng();
@@ -150,13 +151,23 @@
         console.log(targetLoc);
         for (i = 0; i < mapMarkerArray.length; i++) {
             markerCheck = mapMarkerArray[i];
+            // check adalah marker yang akan dicek jaraknya dari marker yang dipilih
             var checkLat = markerCheck.getPosition().lat();
             var checkLng = markerCheck.getPosition().lng();
+            var checkCat = markerCheck.category;
             var checkLoc = new google.maps.LatLng(checkLat,checkLng);
             var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
-            if(distance > 500) {
+            // hanya tampilkan marker yang berjarak dibawah 500 meter dan merupakan hotel (dan marker itu sendiri)
+            if(checkCat === 'Hotel') {
+              if(distance > 500) {
+                markerCheck.setVisible(false);
+              }
+            }
+            else {
               markerCheck.setVisible(false);
             }
+            // balikin visibility selected marker
+            selectedMarker.setVisible(true);
           }
         }
       
