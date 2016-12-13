@@ -1,0 +1,44 @@
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-default {
+  background: white;
+  box-shadow: none;
+  margin-bottom: 0;
+  /*padding: 15px 0;*/
+}
+.navbar-brand > img {
+  height: 50px;
+}
+@media (max-width: 767px) {
+  .navbar-brand {
+    padding: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-brand {
+    padding: 1rem;
+  }
+  .navbar-default .navbar-nav > li > a {
+    padding: 3rem;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+    text-transform: uppercase;
+    min-width: 10rem;
+    text-align: center;
+  }
+  .navbar-default .navbar-nav > .active > a {
+    background: #f0f0f0;
+    box-shadow: none;
+  }
+}
