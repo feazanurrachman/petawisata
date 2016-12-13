@@ -28,6 +28,7 @@
         <option value="Hotel">Hotel</option>
       </select>
       <button onclick="getNearbyLocation()">get nearby</button>
+      <button onclick="getUserLocation()">get user location</button>
     </div>
     <script>
       var map;
@@ -170,6 +171,24 @@
             selectedMarker.setVisible(true);
           }
         }
+
+      function getUserLocation() {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(navigatorSuccess, navigatorFail, {timeout:10000});
+        }
+        else {
+          console.log('browser does not support geolocation');
+        }
+      }
+
+      function navigatorSuccess(pos) {
+        var crd = pos.coords;
+        console.log(crd);
+      }
+
+      function navigatorFail(err) {
+        console.log(err);
+      }
       
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
