@@ -40,61 +40,61 @@
       var map;
       var markerArray = [];
       var mapMarkerArray = [];
-        function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -6.21462, lng: 106.84513},
-            zoom: 11
-          });
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -6.21462, lng: 106.84513},
+          zoom: 11
+        });
 
-        var customLabel = {
-          restaurant: {
-            label: 'R'
-          },
-          bar: {
-            label: 'B'
-          }
-        };
-       var infoWindow = new google.maps.InfoWindow;
+      var customLabel = {
+        restaurant: {
+          label: 'R'
+        },
+        bar: {
+          label: 'B'
+        }
+      };
+      var infoWindow = new google.maps.InfoWindow;
 
-          // Change this depending on the name of your PHP or XML file
-          downloadUrl('markers.xml', function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName('marker');
-            // put xml response into array
-            for (var i = 0; i < markers.length; i++) {
-              var aMarker = [];
-              // 0 = id
-              aMarker.push(i);
-              // 1 = nama
-              var name = markers[i].getAttribute('name');
-              aMarker.push(name);
-              // 2 = type
-              var type = markers[i].getAttribute('type');
-              aMarker.push(type);
-              // 3 = lat, 4 = lng
-              aMarker.push(markers[i].getAttribute('lat'));
-              aMarker.push(markers[i].getAttribute('lng'));
-              // 5 = photo url
-              aMarker.push(markers[i].getAttribute('photo'));
-              // 6 = jam buka
-              aMarker.push(markers[i].getAttribute('open'));
-              // 7 = price
-              aMarker.push(markers[i].getAttribute('price'));
-              // 8 = camera (1 allowed, 0 not allowed)
-              aMarker.push(markers[i].getAttribute('camera'));
-              // 9 = rating
-              aMarker.push(markers[i].getAttribute('rating'));
-              // 10 = visitor
-              aMarker.push(markers[i].getAttribute('visitor'));
-              markerArray.push(aMarker);
-            }
-            // loop through array, create marker, put marker into another array for filter
+      // Change this depending on the name of your PHP or XML file
+      downloadUrl('markers.xml', function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName('marker');
+        // put xml response into array
+        for (var i = 0; i < markers.length; i++) {
+          var aMarker = [];
+          // 0 = id
+          aMarker.push(i);
+          // 1 = nama
+          var name = markers[i].getAttribute('name');
+          aMarker.push(name);
+          // 2 = type
+          var type = markers[i].getAttribute('type');
+          aMarker.push(type);
+          // 3 = lat, 4 = lng
+          aMarker.push(markers[i].getAttribute('lat'));
+          aMarker.push(markers[i].getAttribute('lng'));
+          // 5 = photo url
+          aMarker.push(markers[i].getAttribute('photo'));
+          // 6 = jam buka
+          aMarker.push(markers[i].getAttribute('open'));
+          // 7 = price
+          aMarker.push(markers[i].getAttribute('price'));
+          // 8 = camera (1 allowed, 0 not allowed)
+          aMarker.push(markers[i].getAttribute('camera'));
+          // 9 = rating
+          aMarker.push(markers[i].getAttribute('rating'));
+          // 10 = visitor
+          aMarker.push(markers[i].getAttribute('visitor'));
+          markerArray.push(aMarker);
+        }
+        // loop through array, create marker, put marker into another array for filter
 
-            for(var i = 0; i < markerArray.length;i++) {
-              addMarker(markerArray[i]);
-            }
-          });
-        function downloadUrl(url, callback) {
+        for(var i = 0; i < markerArray.length;i++) {
+          addMarker(markerArray[i]);
+        }
+      });
+      function downloadUrl(url, callback) {
         var request = window.ActiveXObject ?
             new ActiveXObject('Microsoft.XMLHTTP') :
             new XMLHttpRequest;
@@ -124,20 +124,20 @@
         mapMarkerArray.push(thisMarker);
       }
     }
-      function doNothing() {}
-      function filterMarkers(category) {
-        for (i = 0; i < mapMarkerArray.length; i++) {
-          marker = mapMarkerArray[i];
-          // If is same category or category not picked
-          if (marker.category == category || category.length === 0) {
-            marker.setVisible(true);
-          }
-          // Categories don't match 
-          else {
-            marker.setVisible(false);
-          }
+    function doNothing() {}
+    function filterMarkers(category) {
+      for (i = 0; i < mapMarkerArray.length; i++) {
+        marker = mapMarkerArray[i];
+        // If is same category or category not picked
+        if (marker.category == category || category.length === 0) {
+          marker.setVisible(true);
+        }
+        // Categories don't match 
+        else {
+          marker.setVisible(false);
         }
       }
+    }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&callback=initMap" async defer></script>
   </body>
