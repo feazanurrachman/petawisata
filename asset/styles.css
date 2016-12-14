@@ -112,7 +112,7 @@ html, body {
 
 .modal-place__header {
   border-bottom: 2px solid #eee;
-  margin-bottom: 25px;
+  margin-bottom: 1rem;
 }
 
 .modal-place__header-h2 {
