@@ -123,8 +123,11 @@ html, body {
 }
 
 .modal-place__row {
-  margin-bottom: 1rem;
   display: block;
+}
+
+.modal-place__row + .modal-place__row {
+  margin-top: 1rem;
 }
 
 .modal-place__marker {
