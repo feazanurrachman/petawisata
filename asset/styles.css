@@ -1,0 +1,140 @@
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 80%;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+/* From http://bootsnipp.com/snippets/featured/material-design-switch */
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+
+.navbar-default {
+  background: white;
+  box-shadow: none;
+  margin-bottom: 0;
+  /*padding: 15px 0;*/
+}
+.navbar-brand > img {
+  height: 50px;
+}
+
+@media (max-width: 767px) {
+  .navbar-brand {
+    padding: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-brand {
+    padding: 1rem;
+  }
+  .navbar-default .navbar-nav > li > a {
+    padding: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    min-width: 10rem;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  .navbar-default .navbar-nav > .active > a {
+    background: #f0f0f0;
+    box-shadow: none;
+  }
+}
+
+.container-map {
+  position: relative;
+}
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+.modal-place {
+  position: absolute;
+  top: 0;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  z-index: 1;
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.modal-place__header {
+  border-bottom: 2px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.modal-place__header-h2 {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.modal-place__row {
+  display: block;
+}
+
+.modal-place__row + .modal-place__row {
+  margin-top: 1rem;
+}
+
+.modal-place__marker {
+  width: 3rem;
+}
+
+.modal-place__category {
+  width: 20rem;
+}
+

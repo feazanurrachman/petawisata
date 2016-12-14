@@ -4,23 +4,81 @@
     <title>PetaWisata</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="asset/styles.css">
   </head>
   <body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          <img src="asset/LOGO.png" alt="PetaWisata">
+        </a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Map <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Learn More</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+    <div class="container-map">
     <div id="map" style="z-index: 1;"></div>
-    <div id="menu" style="z-index: 2; width: 200px; height: 200px;">
+    <div class="modal-place">
+      <div class="modal-place__header">
+        <h2 class="modal-place__header-h2">Find a tourism place</h2>
+      </div>
+      <table class="modal-place__content">
+        <tr class="modal-place__row">
+          <td class="modal-place__marker">?</td>
+          <td class="modal-place__category">Museum</td>
+          <td>
+          <div class="material-switch pull-right">
+            <input id="museum" name="museum" type="checkbox">
+            <label for="museum" class="label-success"></label>
+          </div>
+          </td>
+        </tr>
+        <tr class="modal-place__row">
+          <td class="modal-place__marker">?</td>
+          <td class="modal-place__category">Mall</td>
+          <td>
+          <div class="material-switch pull-right">
+            <input id="mall" name="mall" type="checkbox">
+            <label for="mall" class="label-success"></label>
+          </div>
+          </td>
+        </tr>
+        <tr class="modal-place__row">
+          <td class="modal-place__marker">?</td>
+          <td class="modal-place__category">Hotel</td>
+          <td>
+          <div class="material-switch pull-right">
+            <input id="hotel" name="hotel" type="checkbox">
+            <label for="hotel" class="label-success"></label>
+          </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    </div>
+    <div id="menu" style="z-index: 2;">
       <select id="type" onchange="filterMarkers(this.value);">
         <option value="">Please select category</option>
         <option value="Museum">Museum</option>
@@ -29,66 +87,70 @@
       </select>
       <button onclick="getNearbyLocation()">get nearby</button>
     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
       var map;
       var markerArray = [];
       var mapMarkerArray = [];
       var selectedMarker;
-        function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -6.21462, lng: 106.84513},
-            zoom: 11
-          });
-        
-        var customLabel = {
-          restaurant: {
-            label: 'R'
-          },
-          bar: {
-            label: 'B'
-          }
-        };
-       var infoWindow = new google.maps.InfoWindow;
 
-          // Change this depending on the name of your PHP or XML file
-          downloadUrl('markers.xml', function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName('marker');
-            // put xml response into array
-            for (var i = 0; i < markers.length; i++) {
-              var aMarker = [];
-              // 0 = id
-              aMarker.push(i);
-              // 1 = nama
-              var name = markers[i].getAttribute('name');
-              aMarker.push(name);
-              // 2 = type
-              var type = markers[i].getAttribute('type');
-              aMarker.push(type);
-              // 3 = lat, 4 = lng
-              aMarker.push(markers[i].getAttribute('lat'));
-              aMarker.push(markers[i].getAttribute('lng'));
-              // 5 = photo url
-              aMarker.push(markers[i].getAttribute('photo'));
-              // 6 = jam buka
-              aMarker.push(markers[i].getAttribute('open'));
-              // 7 = price
-              aMarker.push(markers[i].getAttribute('price'));
-              // 8 = camera (1 allowed, 0 not allowed)
-              aMarker.push(markers[i].getAttribute('camera'));
-              // 9 = rating
-              aMarker.push(markers[i].getAttribute('rating'));
-              // 10 = visitor
-              aMarker.push(markers[i].getAttribute('visitor'));
-              markerArray.push(aMarker);
-            }
-            // loop through array, create marker, put marker into another array for filter
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -6.21462, lng: 106.84513},
+          zoom: 11
+        });
 
-            for(var i = 0; i < markerArray.length;i++) {
-              addMarker(markerArray[i]);
-            }
-          });
-        function downloadUrl(url, callback) {
+      var customLabel = {
+        restaurant: {
+          label: 'R'
+        },
+        bar: {
+          label: 'B'
+        }
+      };
+      var infoWindow = new google.maps.InfoWindow;
+
+      // Change this depending on the name of your PHP or XML file
+      downloadUrl('markers.xml', function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName('marker');
+        // put xml response into array
+        for (var i = 0; i < markers.length; i++) {
+          var aMarker = [];
+          // 0 = id
+          aMarker.push(i);
+          // 1 = nama
+          var name = markers[i].getAttribute('name');
+          aMarker.push(name);
+          // 2 = type
+          var type = markers[i].getAttribute('type');
+          aMarker.push(type);
+          // 3 = lat, 4 = lng
+          aMarker.push(markers[i].getAttribute('lat'));
+          aMarker.push(markers[i].getAttribute('lng'));
+          // 5 = photo url
+          aMarker.push(markers[i].getAttribute('photo'));
+          // 6 = jam buka
+          aMarker.push(markers[i].getAttribute('open'));
+          // 7 = price
+          aMarker.push(markers[i].getAttribute('price'));
+          // 8 = camera (1 allowed, 0 not allowed)
+          aMarker.push(markers[i].getAttribute('camera'));
+          // 9 = rating
+          aMarker.push(markers[i].getAttribute('rating'));
+          // 10 = visitor
+          aMarker.push(markers[i].getAttribute('visitor'));
+          markerArray.push(aMarker);
+        }
+        // loop through array, create marker, put marker into another array for filter
+
+        for(var i = 0; i < markerArray.length;i++) {
+          addMarker(markerArray[i]);
+        }
+      });
+      function downloadUrl(url, callback) {
         var request = window.ActiveXObject ?
             new ActiveXObject('Microsoft.XMLHTTP') :
             new XMLHttpRequest;
@@ -127,7 +189,7 @@
           category: type,
           map: map
         });
-        
+
         mapMarkerArray.push(thisMarker);
         google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
         return function () {
@@ -140,20 +202,20 @@
       })(thisMarker));
       }
     }
-      function doNothing() {}
-      function filterMarkers(category) {
-        for (i = 0; i < mapMarkerArray.length; i++) {
-          marker = mapMarkerArray[i];
-          // If is same category or category not picked
-          if (marker.category == category || category.length === 0) {
-            marker.setVisible(true);
-          }
-          // Categories don't match 
-          else {
-            marker.setVisible(false);
-          }
+    function doNothing() {}
+    function filterMarkers(category) {
+      for (i = 0; i < mapMarkerArray.length; i++) {
+        marker = mapMarkerArray[i];
+        // If is same category or category not picked
+        if (marker.category == category || category.length === 0) {
+          marker.setVisible(true);
+        }
+        // Categories don't match 
+        else {
+          marker.setVisible(false);
         }
       }
+    }
       function getNearbyLocation() {
         console.log('clicked');
         // target adalah marker yang sedang dipilih
@@ -183,7 +245,7 @@
             selectedMarker.setVisible(true);
           }
         }
-      
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
   </body>
