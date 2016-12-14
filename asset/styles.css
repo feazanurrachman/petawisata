@@ -134,6 +134,10 @@ html, body {
   width: 3rem;
 }
 
+.modal-place__marker > img {
+  width: 16px;
+}
+
 .modal-place__category {
   width: 20rem;
 }
