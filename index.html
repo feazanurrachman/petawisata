@@ -257,30 +257,6 @@
         'visitor': marker[10]
       };
 
-
-          // // 0 = id
-          // aMarker.push(i);
-          // // 1 = nama
-          // var name = markers[i].getAttribute('name');
-          // aMarker.push(name);
-          // // 2 = type
-          // var type = markers[i].getAttribute('type');
-          // aMarker.push(type);
-          // // 3 = lat, 4 = lng
-          // aMarker.push(markers[i].getAttribute('lat'));
-          // aMarker.push(markers[i].getAttribute('lng'));
-          // // 5 = photo url
-          // aMarker.push(markers[i].getAttribute('photo'));
-          // // 6 = jam buka
-          // aMarker.push(markers[i].getAttribute('open'));
-          // // 7 = price
-          // aMarker.push(markers[i].getAttribute('price'));
-          // // 8 = camera (1 allowed, 0 not allowed)
-          // aMarker.push(markers[i].getAttribute('camera'));
-          // // 9 = rating
-          // aMarker.push(markers[i].getAttribute('rating'));
-          // // 10 = visitor
-          // aMarker.push(markers[i].getAttribute('visitor'));
       mapMarkerArray.push(thisMarker);
       google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
         return function () {
@@ -302,7 +278,7 @@
             $('.info-windows__header').text(selectedMarker._data.name);
             $('.info-windows__open_hour').text(selectedMarker._data.open_hour);
             $('.info-windows__cameraAllowed').text(selectedMarker._data.cameraAllowed == 1 ? "FREE" : "NOT ALLOWED");
-            $('.info-windows__price').text(selectedMarker._data.price);
+            $('.info-windows__price').text(selectedMarker._data.price > 0 ? selectedMarker._data.price : 'FREE' );
             $('.info-windows__rating').text(selectedMarker._data.rating);
             $('.info-windows__visitor').text(selectedMarker._data.visitor);
             $('.gm-style .gm-style-iw > div').css({ overflow: 'hidden' });
@@ -311,7 +287,7 @@
             console.log('gao...');
           });
           infoWindow.open(map, thisMarker);
-            console.log(selectedMarker);
+          console.log(selectedMarker);
         }
       })(thisMarker));
     }
@@ -346,6 +322,8 @@
           // balikin visibility selected marker
           selectedMarker.setVisible(true);
         }
+        $('.check').prop({ checked: false });
+        console.log($('.check'));
         infoWindow.close();
       }
       function getUserLocation() {
