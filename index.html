@@ -28,18 +28,25 @@
         <option value="Hotel">Hotel</option>
       </select>
       <button onclick="getNearbyLocation()">get nearby</button>
+      <button onclick="getDirection()">get direction</button>
     </div>
     <script>
       var map;
+      var directionsService;
+      var directionsDisplay;
       var markerArray = [];
       var mapMarkerArray = [];
       var selectedMarker;
         function initMap() {
+          directionsService = new google.maps.DirectionsService;
+          directionsDisplay = new google.maps.DirectionsRenderer({
+            suppressMarkers: true
+          });;
           map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -6.21462, lng: 106.84513},
             zoom: 11
           });
-        
+          directionsDisplay.setMap(map);
         var customLabel = {
           restaurant: {
             label: 'R'
@@ -183,6 +190,22 @@
             selectedMarker.setVisible(true);
           }
         }
+
+      function getDirection() {
+        var originLatLng = new google.maps.LatLng(-6.21462,106.84513);
+        var destinationLatLng = new google.maps.LatLng(selectedMarker.getPosition().lat(), selectedMarker.getPosition().lng());
+        directionsService.route({
+          origin: originLatLng,
+          destination: destinationLatLng,
+          travelMode: 'WALKING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
       
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
