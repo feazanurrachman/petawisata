@@ -85,6 +85,7 @@
         <option value="Mall">Mall</option>
         <option value="Hotel">Hotel</option>
       </select>
+      <button onclick="getNearbyLocation()">get nearby</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -93,6 +94,8 @@
       var map;
       var markerArray = [];
       var mapMarkerArray = [];
+      var selectedMarker;
+
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -6.21462, lng: 106.84513},
@@ -168,13 +171,35 @@
         // var address = marker[2];
         var type = marker[2];
         var pos = new google.maps.LatLng(marker[3], marker[4]);
+        var customIcons = {
+          Museum: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          },
+          Hotel: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+          },
+          Mall: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+          }
+        }
         thisMarker = new google.maps.Marker({
           title: title,
+          icon: customIcons[type].icon,
           position: pos,
           category: type,
           map: map
         });
+
         mapMarkerArray.push(thisMarker);
+        google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
+        return function () {
+            console.log('marker gets pushed');
+            selectedMarker = thisMarker;
+            map.panTo(this.getPosition());
+            map.setZoom(15);
+            console.log(selectedMarker);
+        }
+      })(thisMarker));
       }
     }
     function doNothing() {}
@@ -191,7 +216,37 @@
         }
       }
     }
+      function getNearbyLocation() {
+        console.log('clicked');
+        // target adalah marker yang sedang dipilih
+        var markerTarget = selectedMarker;
+        var targetLat = markerTarget.getPosition().lat();
+        var targetLng = markerTarget.getPosition().lng();
+        var targetLoc = new google.maps.LatLng(targetLat, targetLng);
+        console.log(targetLoc);
+        for (i = 0; i < mapMarkerArray.length; i++) {
+            markerCheck = mapMarkerArray[i];
+            // check adalah marker yang akan dicek jaraknya dari marker yang dipilih
+            var checkLat = markerCheck.getPosition().lat();
+            var checkLng = markerCheck.getPosition().lng();
+            var checkCat = markerCheck.category;
+            var checkLoc = new google.maps.LatLng(checkLat,checkLng);
+            var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
+            // hanya tampilkan marker yang berjarak dibawah 500 meter dan merupakan hotel (dan marker itu sendiri)
+            if(checkCat === 'Hotel') {
+              if(distance > 500) {
+                markerCheck.setVisible(false);
+              }
+            }
+            else {
+              markerCheck.setVisible(false);
+            }
+            // balikin visibility selected marker
+            selectedMarker.setVisible(true);
+          }
+        }
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
   </body>
 </html>
