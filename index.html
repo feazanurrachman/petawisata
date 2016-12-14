@@ -37,6 +37,7 @@
       var mapMarkerArray = [];
       var selectedMarker;
       var userLocationMarker;
+      var downloadUrl;
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -6.21462, lng: 106.84513},
@@ -52,6 +53,21 @@
           }
         };
        var infoWindow = new google.maps.InfoWindow;
+          downloadUrl = function(url, callback) {
+            var request = window.ActiveXObject ?
+                new ActiveXObject('Microsoft.XMLHTTP') :
+                new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+            request.open('GET', url, true);
+            request.send(null);
+          }
 
           // Change this depending on the name of your PHP or XML file
           downloadUrl('markers.xml', function(data) {
@@ -91,22 +107,7 @@
               addMarker(markerArray[i]);
             }
           });
-        function downloadUrl(url, callback) {
-        var request = window.ActiveXObject ?
-            new ActiveXObject('Microsoft.XMLHTTP') :
-            new XMLHttpRequest;
-
-        request.onreadystatechange = function() {
-          if (request.readyState == 4) {
-            request.onreadystatechange = doNothing;
-            callback(request, request.status);
-          }
-        };
-
-        request.open('GET', url, true);
-        request.send(null);
-      }
-
+        
       function addMarker(marker) {
         var title = marker[1];
         // var address = marker[2];
@@ -200,29 +201,22 @@
       function navigatorFail(err) {
         console.log(err);
         console.log('nav error, use IP for location');
-        $.ajax({
-          type: "GET",
-          url: "http://geoplugin.net/json.gp",
-          dataType: "jsonp",
-          crossDomain:true,
-          success: function (data) {
-            console.log(data);
-          },
-          error: function (data) {
-            console.log("error");
-            console.log(data);
-          }
+        downloadUrl('http://ip-api.com/xml?fields=lat,lon', function(data) {
+            var xml = data.responseXML;
+            var userLat = xml.documentElement.getElementsByTagName('lat')[0].childNodes[0].nodeValue;
+            var userLng = xml.documentElement.getElementsByTagName('lon')[0].childNodes[0].nodeValue
+            var userLocation = new google.maps.LatLng(userLat, userLng);
+            console.log(userLocation);
+            userLocationMarker = new google.maps.Marker({
+              title: 'User Location',
+              icon: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+              position: userLocation,
+              category: 'Special',
+              map: map
+            });
+            map.panTo(userLocation);
+            map.setZoom(15);
         });
-        // $.getJSON("www.geoplugin.net/json.gp", function( data ) {
-        //   var items = [];
-        //   console.log('apa aja');
-        //   $.each( data, function( key, val ) {
-        //     console.log(val);
-        //   });
-        // });
-        // $.getJSON("//www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
-        //   console.log(JSON.stringify(data, null, 2));
-        // });
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
