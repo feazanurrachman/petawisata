@@ -321,12 +321,23 @@ html, body {
   font-weight: bold;
 }
 
-.info-windows__nearby-button {
+.info-windows__button {
   width: 100%;
-  background-color: yellow;
   border: none;
   padding: 1rem 0;
   font-weight: bold;
+  border-radius: 5px;
+}
+
+.info-windows__button-container + .info-windows__button-container {
+  margin-top: 5px;
+}
+
+.info-windows__button.info-windows__button--yellow {
+  background-color: yellow;
+}
+.info-windows__button.info-windows__button--green {
+  background-color: #5bc0de;
 }
 
 .menu {

@@ -81,7 +81,7 @@
     </div>
     </div>
     <div class="menu" style="width: 300px">
-      <div class="info-windows" style="width: 300px">
+      <div class="info-windows" style="width: 350px">
         <div class="row info-windows__main">
           <div class="col-sm-4">
             <img width="100" src="http://wisatanesia.co/wp-content/uploads/2014/10/gambar-museum-bank-indonesia.jpg" alt="aa">
@@ -101,16 +101,23 @@
           </div>
         </div>
         <div class="row info-windows__info">
-          <div class="col-sm-4">09:00 - 16:00</div>
-          <div class="col-sm-4">15000 IDR</div>
-          <div class="col-sm-4">FREE</div>
+          <div class="col-sm-4"><i class="fa fa-clock-o"></i> 09:00 - 16:00</div>
+          <div class="col-sm-4"><i class="fa fa-money"></i> 15000 IDR</div>
+          <div class="col-sm-4"><i class="fa fa-camera"></i> FREE</div>
         </div>
-        <div class="row">
-        <div class="col-sm-12">
-        <button class="info-windows__nearby-button"  onclick="getNearbyLocation()">
-          GET NEARBY
-          </button>
+        <div class="row info-windows__button-container">
+          <div class="col-sm-12">
+          <button class="info-windows__button info-windows__button--yellow"  onclick="getNearbyLocation()">
+            GET NEARBY
+            </button>
+          </div>
         </div>
+        <div class="row info-windows__button-container">
+          <div class="col-sm-12">
+          <button class="info-windows__button info-windows__button--green">
+            GET DIRECTION
+            </button>
+          </div>
         </div>
       </div>
     </div>
