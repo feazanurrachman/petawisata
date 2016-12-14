@@ -52,7 +52,7 @@
           <td class="modal-place__category">Museum</td>
           <td>
           <div class="material-switch pull-right">
-            <input id="museum" name="museum" data-type="museum" class="check" type="checkbox">
+            <input id="museum" name="museum" data-type="Museum" class="check" type="checkbox" checked>
             <label for="museum" class="label-success"></label>
           </div>
           </td>
@@ -62,7 +62,7 @@
           <td class="modal-place__category">Mall</td>
           <td>
           <div class="material-switch pull-right">
-            <input id="mall" name="mall" data-type="mall" class="check" type="checkbox">
+            <input id="mall" name="mall" data-type="Mall" class="check" type="checkbox" checked>
             <label for="mall" class="label-danger"></label>
           </div>
           </td>
@@ -72,7 +72,7 @@
           <td class="modal-place__category">Hotel</td>
           <td>
           <div class="material-switch pull-right">
-            <input id="hotel" name="hotel" data-type="hotel" class="check" type="checkbox">
+            <input id="hotel" name="hotel" data-type="Hotel" class="check" type="checkbox" checked>
             <label for="hotel" class="label-info"></label>
           </div>
           </td>
@@ -97,6 +97,18 @@
       var markerArray = [];
       var mapMarkerArray = [];
       var selectedMarker;
+
+      $('.check').click(function(e) {
+        console.log(e);
+        var category = $(this).data('type');
+        var isChecked = this.checked;
+        for (i = 0; i < mapMarkerArray.length; i++) {
+          marker = mapMarkerArray[i];
+          // If is same category or category not picked
+          if (marker.category == category || category.length === 0) {
+            marker.setVisible(isChecked);
+          }
+      });
 
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -207,19 +219,7 @@
     }
 
     function doNothing() {}
-    function filterMarkers(category) {
-      for (i = 0; i < mapMarkerArray.length; i++) {
-        marker = mapMarkerArray[i];
-        // If is same category or category not picked
-        if (marker.category == category || category.length === 0) {
-          marker.setVisible(true);
-        }
-        // Categories don't match
-        else {
-          marker.setVisible(false);
-        }
-      }
-    }
+
     function getNearbyLocation() {
       console.log('clicked');
       // target adalah marker yang sedang dipilih
