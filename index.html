@@ -199,10 +199,30 @@
 
       function navigatorFail(err) {
         console.log(err);
-        console.log('nav error, use IP for location')
-        $.getJSON("//www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
-          console.log(JSON.stringify(data, null, 2));
+        console.log('nav error, use IP for location');
+        $.ajax({
+          type: "GET",
+          url: "http://geoplugin.net/json.gp",
+          dataType: "jsonp",
+          crossDomain:true,
+          success: function (data) {
+            console.log(data);
+          },
+          error: function (data) {
+            console.log("error");
+            console.log(data);
+          }
         });
+        // $.getJSON("www.geoplugin.net/json.gp", function( data ) {
+        //   var items = [];
+        //   console.log('apa aja');
+        //   $.each( data, function( key, val ) {
+        //     console.log(val);
+        //   });
+        // });
+        // $.getJSON("//www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
+        //   console.log(JSON.stringify(data, null, 2));
+        // });
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
