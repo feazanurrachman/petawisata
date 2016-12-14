@@ -80,14 +80,39 @@
       </table>
     </div>
     </div>
-    <div id="menu" style="z-index: 2;">
-      <select id="type" onchange="filterMarkers(this.value);">
-        <option value="">Please select category</option>
-        <option value="Museum">Museum</option>
-        <option value="Mall">Mall</option>
-        <option value="Hotel">Hotel</option>
-      </select>
-      <button onclick="getNearbyLocation()">get nearby</button>
+    <div class="menu" style="width: 300px">
+      <div class="info-windows" style="width: 300px">
+        <div class="row info-windows__main">
+          <div class="col-sm-4">
+            <img width="100" src="http://wisatanesia.co/wp-content/uploads/2014/10/gambar-museum-bank-indonesia.jpg" alt="aa">
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-sm-12">
+                <h5 class="info-windows__header">Museum A</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <i class="fa fa-star"></i> 5.5
+                <i class="fa fa-smile-o"></i> 5.5
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row info-windows__info">
+          <div class="col-sm-4">09:00 - 16:00</div>
+          <div class="col-sm-4">15000 IDR</div>
+          <div class="col-sm-4">FREE</div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+        <button class="info-windows__nearby-button"  onclick="getNearbyLocation()">
+          GET NEARBY
+          </button>
+        </div>
+        </div>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -97,6 +122,7 @@
       var markerArray = [];
       var mapMarkerArray = [];
       var selectedMarker;
+      var infoWindow;
 
       $('.check').click(function(e) {
         console.log(e);
@@ -125,7 +151,6 @@
           label: 'B'
         }
       };
-      var infoWindow = new google.maps.InfoWindow;
 
       // Change this depending on the name of your PHP or XML file
       downloadUrl('markers.xml', function(data) {
@@ -210,10 +235,25 @@
       mapMarkerArray.push(thisMarker);
       google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
         return function () {
-            console.log('marker gets pushed');
-            selectedMarker = thisMarker;
-            map.panTo(this.getPosition());
-            map.setZoom(15);
+          if (typeof infoWindow !== 'undefined') {
+            infoWindow.close();
+          }
+          console.log('marker gets pushed');
+          selectedMarker = thisMarker;
+          map.panTo(this.getPosition());
+          map.setZoom(15);
+          infoWindow = new google.maps.InfoWindow({
+            content: $('.menu')[0].innerHTML,
+            maxWidth: 600
+          });
+          google.maps.event.addListener(infoWindow, 'domready', function() {
+            console.log('load...');
+            $('.gm-style .gm-style-iw > div').css({ overflow: 'hidden' });
+            console.log($('.gm-style .gm-style-iw > div'));
+            $('.gm-style .gm-style-iw > div > div').css({ overflow: 'hidden' });
+            console.log('daol...');
+          });
+          infoWindow.open(map, thisMarker);
             console.log(selectedMarker);
         }
       })(thisMarker));
@@ -249,6 +289,7 @@
           // balikin visibility selected marker
           selectedMarker.setVisible(true);
         }
+        infoWindow.close();
       }
 
     </script>

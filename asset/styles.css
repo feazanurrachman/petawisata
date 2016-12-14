@@ -95,7 +95,7 @@ html, body {
  * element that contains the map. */
 #map {
   height: 100%;
-  min-height: 400px;
+  min-height: 550px;
   position: relative;
 }
 
@@ -154,7 +154,6 @@ html, body {
   font: bold 16px sans-serif;
 
   padding: 55px 50px;
-  margin-top: 80px;
 }
 
 .footer-distributed .footer-left,
@@ -314,4 +313,22 @@ html, body {
 
 }
 
+.info-windows__main, .info-windows__info {
+  margin-bottom: 1rem;
+}
 
+.info-windows__header {
+  font-weight: bold;
+}
+
+.info-windows__nearby-button {
+  width: 100%;
+  background-color: yellow;
+  border: none;
+  padding: 1rem 0;
+  font-weight: bold;
+}
+
+.menu {
+  display: none;
+}
