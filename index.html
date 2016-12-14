@@ -130,6 +130,7 @@
       var mapMarkerArray = [];
       var selectedMarker;
       var infoWindow;
+      var downloadUrl;
 
       $('.check').click(function(e) {
         console.log(e);
@@ -158,6 +159,22 @@
           label: 'B'
         }
       };
+
+      downloadUrl = function (url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+          }
+        };
+
+        request.open('GET', url, true);
+        request.send(null);
+      }
 
       // Change this depending on the name of your PHP or XML file
       downloadUrl('markers.xml', function(data) {
@@ -198,23 +215,6 @@
         }
       });
     }
-
-    function downloadUrl(url, callback) {
-      var request = window.ActiveXObject ?
-          new ActiveXObject('Microsoft.XMLHTTP') :
-          new XMLHttpRequest;
-
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          request.onreadystatechange = doNothing;
-          callback(request, request.status);
-        }
-      };
-
-      request.open('GET', url, true);
-      request.send(null);
-    }
-
     function addMarker(marker) {
       var title = marker[1];
       // var address = marker[2];
