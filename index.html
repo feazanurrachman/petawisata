@@ -213,6 +213,7 @@
         for(var i = 0; i < markerArray.length;i++) {
           addMarker(markerArray[i]);
         }
+        getUserLocation();
       });
     }
     function addMarker(marker) {
@@ -340,7 +341,49 @@
         }
         infoWindow.close();
       }
+      function getUserLocation() {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(navigatorSuccess, navigatorFail, {timeout:10000});
+        }
+        else {
+          navigatorFail();
+        }
+      }
 
+      function navigatorSuccess(pos) {
+        var crd = pos.coords;
+        var title = 'User Location';
+        var type = 'Special'
+        var pos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        console.log(crd);
+        userLocationMarker = new google.maps.Marker({
+          title: title,
+          position: pos,
+          category: type,
+          map: map
+        });
+      }
+
+      function navigatorFail(err) {
+        console.log(err);
+        console.log('nav error, use IP for location');
+        downloadUrl('http://ip-api.com/xml?fields=lat,lon', function(data) {
+            var xml = data.responseXML;
+            var userLat = xml.documentElement.getElementsByTagName('lat')[0].childNodes[0].nodeValue;
+            var userLng = xml.documentElement.getElementsByTagName('lon')[0].childNodes[0].nodeValue
+            var userLocation = new google.maps.LatLng(userLat, userLng);
+            console.log(userLocation);
+            userLocationMarker = new google.maps.Marker({
+              title: 'User Location',
+              icon: 'http://maps.google.com/mapfiles/kml/shapes/man.png',
+              position: userLocation,
+              category: 'Special',
+              map: map
+            });
+            map.panTo(userLocation);
+            map.setZoom(15);
+        });
+      }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
   </body>
