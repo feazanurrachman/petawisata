@@ -154,58 +154,57 @@
       });
     }
 
+    function downloadUrl(url, callback) {
+      var request = window.ActiveXObject ?
+          new ActiveXObject('Microsoft.XMLHTTP') :
+          new XMLHttpRequest;
 
-      function downloadUrl(url, callback) {
-        var request = window.ActiveXObject ?
-            new ActiveXObject('Microsoft.XMLHTTP') :
-            new XMLHttpRequest;
-
-        request.onreadystatechange = function() {
-          if (request.readyState == 4) {
-            request.onreadystatechange = doNothing;
-            callback(request, request.status);
-          }
-        };
-
-        request.open('GET', url, true);
-        request.send(null);
-      }
-
-      function addMarker(marker) {
-        var title = marker[1];
-        // var address = marker[2];
-        var type = marker[2];
-        var pos = new google.maps.LatLng(marker[3], marker[4]);
-        var customIcons = {
-          Museum: {
-            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-          },
-          Hotel: {
-            icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
-          },
-          Mall: {
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-          }
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          request.onreadystatechange = doNothing;
+          callback(request, request.status);
         }
-        thisMarker = new google.maps.Marker({
-          title: title,
-          icon: customIcons[type].icon,
-          position: pos,
-          category: type,
-          map: map
-        });
+      };
 
-        mapMarkerArray.push(thisMarker);
-        google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
-          return function () {
-              console.log('marker gets pushed');
-              selectedMarker = thisMarker;
-              map.panTo(this.getPosition());
-              map.setZoom(15);
-              console.log(selectedMarker);
-          }
-        })(thisMarker));
+      request.open('GET', url, true);
+      request.send(null);
+    }
+
+    function addMarker(marker) {
+      var title = marker[1];
+      // var address = marker[2];
+      var type = marker[2];
+      var pos = new google.maps.LatLng(marker[3], marker[4]);
+      var customIcons = {
+        Museum: {
+          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        },
+        Hotel: {
+          icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+        },
+        Mall: {
+          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+        }
       }
+      thisMarker = new google.maps.Marker({
+        title: title,
+        icon: customIcons[type].icon,
+        position: pos,
+        category: type,
+        map: map
+      });
+
+      mapMarkerArray.push(thisMarker);
+      google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
+        return function () {
+            console.log('marker gets pushed');
+            selectedMarker = thisMarker;
+            map.panTo(this.getPosition());
+            map.setZoom(15);
+            console.log(selectedMarker);
+        }
+      })(thisMarker));
+    }
 
     function doNothing() {}
     function filterMarkers(category) {
@@ -215,41 +214,41 @@
         if (marker.category == category || category.length === 0) {
           marker.setVisible(true);
         }
-        // Categories don't match 
+        // Categories don't match
         else {
           marker.setVisible(false);
         }
       }
     }
-      function getNearbyLocation() {
-        console.log('clicked');
-        // target adalah marker yang sedang dipilih
-        var markerTarget = selectedMarker;
-        var targetLat = markerTarget.getPosition().lat();
-        var targetLng = markerTarget.getPosition().lng();
-        var targetLoc = new google.maps.LatLng(targetLat, targetLng);
-        console.log(targetLoc);
-        for (i = 0; i < mapMarkerArray.length; i++) {
-            markerCheck = mapMarkerArray[i];
-            // check adalah marker yang akan dicek jaraknya dari marker yang dipilih
-            var checkLat = markerCheck.getPosition().lat();
-            var checkLng = markerCheck.getPosition().lng();
-            var checkCat = markerCheck.category;
-            var checkLoc = new google.maps.LatLng(checkLat,checkLng);
-            var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
-            // hanya tampilkan marker yang berjarak dibawah 500 meter dan merupakan hotel (dan marker itu sendiri)
-            if(checkCat === 'Hotel') {
-              if(distance > 500) {
-                markerCheck.setVisible(false);
-              }
-            }
-            else {
+    function getNearbyLocation() {
+      console.log('clicked');
+      // target adalah marker yang sedang dipilih
+      var markerTarget = selectedMarker;
+      var targetLat = markerTarget.getPosition().lat();
+      var targetLng = markerTarget.getPosition().lng();
+      var targetLoc = new google.maps.LatLng(targetLat, targetLng);
+      console.log(targetLoc);
+      for (i = 0; i < mapMarkerArray.length; i++) {
+          markerCheck = mapMarkerArray[i];
+          // check adalah marker yang akan dicek jaraknya dari marker yang dipilih
+          var checkLat = markerCheck.getPosition().lat();
+          var checkLng = markerCheck.getPosition().lng();
+          var checkCat = markerCheck.category;
+          var checkLoc = new google.maps.LatLng(checkLat,checkLng);
+          var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
+          // hanya tampilkan marker yang berjarak dibawah 500 meter dan merupakan hotel (dan marker itu sendiri)
+          if(checkCat === 'Hotel') {
+            if(distance > 500) {
               markerCheck.setVisible(false);
             }
-            // balikin visibility selected marker
-            selectedMarker.setVisible(true);
           }
+          else {
+            markerCheck.setVisible(false);
+          }
+          // balikin visibility selected marker
+          selectedMarker.setVisible(true);
         }
+      }
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEyqMEiB_t3FkhXmb-8061jA4xhp8sNAg&libraries=geometry&callback=initMap" async defer></script>
