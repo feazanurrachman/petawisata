@@ -114,7 +114,7 @@
         </div>
         <div class="row info-windows__button-container  ">
           <div class="col-sm-12">
-          <button class="info-windows__button info-windows__button--green">
+          <button class="info-windows__button info-windows__button--green" onclick="getDirection()">
             GET DIRECTION
             </button>
           </div>
@@ -131,6 +131,9 @@
       var selectedMarker;
       var infoWindow;
       var downloadUrl;
+      var userLocationMarker;
+      var directionsService;
+      var directionsDisplay;
 
       $('.check').click(function(e) {
         console.log(e);
@@ -146,11 +149,15 @@
       });
 
       function initMap() {
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer({
+          suppressMarkers: true
+        });;
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -6.21462, lng: 106.84513},
           zoom: 11
         });
-
+        directionsDisplay.setMap(map);
       var customLabel = {
         restaurant: {
           label: 'R'
@@ -382,6 +389,22 @@
             });
             map.panTo(userLocation);
             map.setZoom(15);
+        });
+      }
+
+      function getDirection() {
+        var originLatLng = new google.maps.LatLng(userLocationMarker.getPosition().lat(), userLocationMarker.getPosition().lng());
+        var destinationLatLng = new google.maps.LatLng(selectedMarker.getPosition().lat(), selectedMarker.getPosition().lng());
+        directionsService.route({
+          origin: originLatLng,
+          destination: destinationLatLng,
+          travelMode: 'WALKING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
         });
       }
     </script>
