@@ -109,12 +109,25 @@
         // var address = marker[2];
         var type = marker[2];
         var pos = new google.maps.LatLng(marker[3], marker[4]);
+        var customIcons = {
+          Museum: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          },
+          Hotel: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+          },
+          Mall: {
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+          }
+        }
         thisMarker = new google.maps.Marker({
           title: title,
+          icon: customIcons[type].icon,
           position: pos,
           category: type,
           map: map
         });
+        
         mapMarkerArray.push(thisMarker);
         google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
         return function () {
