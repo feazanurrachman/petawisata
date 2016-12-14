@@ -84,7 +84,7 @@
       <div class="info-windows" style="width: 350px">
         <div class="row info-windows__main">
           <div class="col-sm-4">
-            <img width="100" src="http://wisatanesia.co/wp-content/uploads/2014/10/gambar-museum-bank-indonesia.jpg" alt="aa">
+            <img class="info-windows__photo" width="100" src="http://wisatanesia.co/wp-content/uploads/2014/10/gambar-museum-bank-indonesia.jpg" alt="aa">
           </div>
           <div class="col-sm-8">
             <div class="row">
@@ -94,16 +94,16 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <i class="fa fa-star"></i> 5.5
-                <i class="fa fa-smile-o"></i> 5.5
+                <i class="fa fa-star"></i> <span class="info-windows__rating">5.5</span>
+                <i class="fa fa-smile-o"></i> <span class="info-windows__visitor">55</span>
               </div>
             </div>
           </div>
         </div>
         <div class="row info-windows__info">
-          <div class="col-sm-4"><i class="fa fa-clock-o"></i> 09:00 - 16:00</div>
-          <div class="col-sm-4"><i class="fa fa-money"></i> 15000 IDR</div>
-          <div class="col-sm-4"><i class="fa fa-camera"></i> FREE</div>
+          <div class="col-sm-4"><i class="fa fa-clock-o"></i> <span class="info-windows__open_hour">09:00 - 16:00</span></div>
+          <div class="col-sm-4"><i class="fa fa-money"></i> <span class="info-windows__price">15000</span> IDR</div>
+          <div class="col-sm-4"><i class="fa fa-camera"></i> <span class="info-windows__cameraAllowed">FREE</span></div>
         </div>
         <div class="row info-windows__button-container">
           <div class="col-sm-12">
@@ -112,7 +112,7 @@
             </button>
           </div>
         </div>
-        <div class="row info-windows__button-container">
+        <div class="row info-windows__button-container  ">
           <div class="col-sm-12">
           <button class="info-windows__button info-windows__button--green">
             GET DIRECTION
@@ -238,7 +238,41 @@
         category: type,
         map: map
       });
+      thisMarker._data = {
+        'name': title,
+        'type': type,
+        'photo_url': marker[5],
+        'open_hour': marker[6],
+        'price': marker[7],
+        'cameraAllowed': marker[8],
+        'rating': marker[9],
+        'visitor': marker[10]
+      };
 
+
+          // // 0 = id
+          // aMarker.push(i);
+          // // 1 = nama
+          // var name = markers[i].getAttribute('name');
+          // aMarker.push(name);
+          // // 2 = type
+          // var type = markers[i].getAttribute('type');
+          // aMarker.push(type);
+          // // 3 = lat, 4 = lng
+          // aMarker.push(markers[i].getAttribute('lat'));
+          // aMarker.push(markers[i].getAttribute('lng'));
+          // // 5 = photo url
+          // aMarker.push(markers[i].getAttribute('photo'));
+          // // 6 = jam buka
+          // aMarker.push(markers[i].getAttribute('open'));
+          // // 7 = price
+          // aMarker.push(markers[i].getAttribute('price'));
+          // // 8 = camera (1 allowed, 0 not allowed)
+          // aMarker.push(markers[i].getAttribute('camera'));
+          // // 9 = rating
+          // aMarker.push(markers[i].getAttribute('rating'));
+          // // 10 = visitor
+          // aMarker.push(markers[i].getAttribute('visitor'));
       mapMarkerArray.push(thisMarker);
       google.maps.event.addListener(thisMarker, 'click', (function (thisMarker) {
         return function () {
@@ -247,6 +281,7 @@
           }
           console.log('marker gets pushed');
           selectedMarker = thisMarker;
+          // $('.menu')
           map.panTo(this.getPosition());
           map.setZoom(15);
           infoWindow = new google.maps.InfoWindow({
@@ -255,10 +290,17 @@
           });
           google.maps.event.addListener(infoWindow, 'domready', function() {
             console.log('load...');
+            $('.info-windows__photo').attr({'src': selectedMarker._data.photo_url });
+            $('.info-windows__header').text(selectedMarker._data.name);
+            $('.info-windows__open_hour').text(selectedMarker._data.open_hour);
+            $('.info-windows__cameraAllowed').text(selectedMarker._data.cameraAllowed == 1 ? "FREE" : "NOT ALLOWED");
+            $('.info-windows__price').text(selectedMarker._data.price);
+            $('.info-windows__rating').text(selectedMarker._data.rating);
+            $('.info-windows__visitor').text(selectedMarker._data.visitor);
             $('.gm-style .gm-style-iw > div').css({ overflow: 'hidden' });
             console.log($('.gm-style .gm-style-iw > div'));
             $('.gm-style .gm-style-iw > div > div').css({ overflow: 'hidden' });
-            console.log('daol...');
+            console.log('gao...');
           });
           infoWindow.open(map, thisMarker);
             console.log(selectedMarker);
