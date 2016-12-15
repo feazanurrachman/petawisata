@@ -327,7 +327,6 @@
           selectedMarker.setVisible(true);
         }
         $('.check').prop({ checked: false });
-        console.log($('.check'));
         infoWindow.close();
       }
       function getUserLocation() {
@@ -386,7 +385,10 @@
           travelMode: 'WALKING'
         }, function(response, status) {
           if (status === 'OK') {
-            directionsDisplay.setDirections(response);
+              directionsDisplay.setDirections(response);
+              if (typeof infoWindow !== 'undefined') {
+                  infoWindow.close();
+              }
           } else {
             window.alert('Directions request failed due to ' + status);
           }
