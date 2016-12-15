@@ -311,12 +311,15 @@
           var checkLoc = new google.maps.LatLng(checkLat,checkLng);
           var distance = google.maps.geometry.spherical.computeDistanceBetween(checkLoc, targetLoc);
           // hanya tampilkan marker yang berjarak dibawah 500 meter dan merupakan hotel (dan marker itu sendiri)
-          if(checkCat === 'Hotel') {
-            if(distance > 500) {
-              markerCheck.setVisible(false);
-            }
-          }
-          else {
+          // if(checkCat === 'Hotel') {
+          //   if(distance > 500) {
+          //     markerCheck.setVisible(false);
+          //   }
+          // }
+          // else {
+          //   markerCheck.setVisible(false);
+          // }
+          if(distance > 500) {
             markerCheck.setVisible(false);
           }
           // balikin visibility selected marker
