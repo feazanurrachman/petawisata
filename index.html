@@ -351,6 +351,8 @@
           map: map,
           icon: 'http://maps.google.com/mapfiles/kml/shapes/man.png'
         });
+        map.panTo(userLocation);
+        map.setZoom(15);
       }
 
       function navigatorFail(err) {
@@ -359,7 +361,7 @@
         downloadUrl('http://ip-api.com/xml?fields=lat,lon', function(data) {
             var xml = data.responseXML;
             var userLat = xml.documentElement.getElementsByTagName('lat')[0].childNodes[0].nodeValue;
-            var userLng = xml.documentElement.getElementsByTagName('lon')[0].childNodes[0].nodeValue
+            var userLng = xml.documentElement.getElementsByTagName('lon')[0].childNodes[0].nodeValue;
             var userLocation = new google.maps.LatLng(userLat, userLng);
             console.log(userLocation);
             userLocationMarker = new google.maps.Marker({
